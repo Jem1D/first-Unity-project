@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 6812109012057243976}
   - component: {fileID: 7978409808873725961}
   m_Layer: 0
-  m_Name: StandardTurret
+  m_Name: MissileTurret
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135,8 +135,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  range: 10
-  fireRate: 1
+  range: 20
+  fireRate: 0.5
   partToRotate: {fileID: 4460580078897938223}
   bulletPrefab: {fileID: 1704723897217046496, guid: 3a20345acd56643888440b89969dfb5a, type: 3}
   firePoint: {fileID: 7450505057165360755}

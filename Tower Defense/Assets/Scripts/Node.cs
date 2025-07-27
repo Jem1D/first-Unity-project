@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 public class Node : MonoBehaviour
 {
     // public Color hoverColor = Color.green;
@@ -29,34 +30,36 @@ public class Node : MonoBehaviour
     private Renderer rend;
     private bool isHovering;
     private GameObject turret;
+    BuildManager buildManager;
 
     void Start()
     {
         rend = GetComponent<Renderer>();
         defaultColor = rend.material.color;
+        buildManager = BuildManager.instance;
+
     }
 
-    void OnMouseDown()
-    {
-        if (turret != null)
-        {
-            Debug.Log("Cant Build");
-            return;
-        }
-        Debug.Log("Can Build");
-        GameObject turretToBuild = BuildManager.instance.getTurretToBuild();
-        turret = (GameObject)Instantiate(turretToBuild, transform.position + offsetPosition, transform.rotation);
-    }
+    
     void Update()
     {
         // Use new Input System's Mouse.current
         if (Mouse.current == null) return; // Mouse not connected
+
+        if (buildManager.getTurretToBuild() == null)
+        {
+            return;
+        }
 
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
         if (Physics.Raycast(ray, out RaycastHit hit) && hit.transform == transform)
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
             if (!isHovering)
             {
                 isHovering = true;
@@ -71,7 +74,7 @@ public class Node : MonoBehaviour
                     }
 
                     // Debug.Log("Can Build");
-                    GameObject turretToBuild = BuildManager.instance.getTurretToBuild();
+                    GameObject turretToBuild = buildManager.getTurretToBuild();
                     turret = Instantiate(turretToBuild, transform.position + offsetPosition, transform.rotation);
                 }
         }
